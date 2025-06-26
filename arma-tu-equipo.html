@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arma tu Equipo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 30px;
+    }
+    .form-section {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: auto;
+    }
+    .resumen {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-section">
+    <h2 class="text-center mb-4">¡Arma tu equipo ideal!</h2>
+    <form id="equipoForm">
+
+      <div class="mb-3">
+        <label class="form-label">Procesador</label>
+        <select class="form-select" id="procesador" required>
+          <option disabled selected>Elige una opción</option>
+          <optgroup label="Intel">
+            <option>i7-4790</option>
+            <option>i7-8700</option>
+            <option>i7-9700K</option>
+            <option>i9-9900K</option>
+            <option>i7-12700K</option>
+            <option>i9-12900K</option>
+            <option>i9-13900K</option>
+          </optgroup>
+          <optgroup label="AMD Ryzen">
+            <option>Ryzen 3 3200G</option>
+            <option>Ryzen 5 3600</option>
+            <option>Ryzen 7 3700X</option>
+            <option>Ryzen 7 5800X</option>
+            <option>Ryzen 9 5900X</option>
+            <option>Ryzen 9 7950X</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Tarjeta Gráfica</label>
+        <select class="form-select" id="gpu" required>
+          <option disabled selected>Elige una opción</option>
+          <optgroup label="NVIDIA">
+            <option>GTX 1660 6GB</option>
+            <option>RTX 2060 SUPER 8GB</option>
+            <option>RTX 3060 Ti 8GB</option>
+            <option>RTX 4070 12GB</option>
+          </optgroup>
+          <optgroup label="AMD Radeon">
+            <option>RX 580 8GB</option>
+            <option>RX 6600 8GB</option>
+            <option>RX 6700 XT 12GB</option>
+            <option>RX 7900 XTX 24GB</option>
+          </optgroup>
+          <optgroup label="Intel Arc">
+            <option>Arc A380 6GB</option>
+            <option>Arc A750 8GB</option>
+            <option>Arc A770 16GB</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Placa Madre</label>
+        <select class="form-select" id="placa" required>
+          <option disabled selected>Elige una opción</option>
+          <option>MSI B450M Pro-VDH</option>
+          <option>Gigabyte B550M DS3H</option>
+          <option>ASUS TUF B650-Plus</option>
+          <option>MSI Z690 Tomahawk</option>
+          <option>ASUS ROG Strix X570-F</option>
+          <option>Gigabyte Z790 AORUS Elite</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Memoria RAM</label>
+        <select class="form-select" id="ram" required>
+          <option disabled selected>Elige una opción</option>
+          <option>16GB 3200MHz Corsair</option>
+          <option>32GB 3600MHz HyperX</option>
+          <option>64GB 3600MHz Juhor</option>
+          <option>32GB 4000MHz G.Skill</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Almacenamiento</label>
+        <select class="form-select" id="almacenamiento" required>
+          <option disabled selected>Elige una opción</option>
+          <option>SSD 512GB NVMe</option>
+          <option>SSD 1TB NVMe</option>
+          <option>SSD 2TB SATA</option>
+          <option>HDD 2TB 7200rpm</option>
+          <option>HDD 4TB 7200rpm</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Fuente de poder</label>
+        <select class="form-select" id="fuente" required>
+          <option disabled selected>Elige una opción</option>
+          <option>EVGA 600W 80+ Bronze</option>
+          <option>Corsair 650W 80+ Gold</option>
+          <option>Seasonic 750W 80+ Platinum</option>
+          <option>Cooler Master 850W 80+ Gold</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <button type="button" class="btn btn-primary w-100" onclick="generarResumen()">Generar resumen</button>
+      </div>
+
+      <div class="resumen border rounded p-3 bg-light" id="resumenBox">
+        <h4>Resumen de tu equipo:</h4>
+        <ul id="resumenLista"></ul>
+        <div class="mt-3">
+          <label class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com" required>
+        </div>
+        <button class="btn btn-success mt-3" onclick="enviarCorreo()">Enviar a mi correo</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    function generarResumen() {
+      const campos = ['procesador', 'gpu', 'placa', 'ram', 'almacenamiento', 'fuente'];
+      const lista = document.getElementById('resumenLista');
+      lista.innerHTML = '';
+      campos.forEach(id => {
+        const valor = document.getElementById(id).value;
+        const li = document.createElement('li');
+        li.textContent = `${id.charAt(0).toUpperCase() + id.slice(1)}: ${valor}`;
+        lista.appendChild(li);
+      });
+      document.getElementById('resumenBox').style.display = 'block';
+    }
+
+    function enviarCorreo() {
+      const correo = document.getElementById('correo');
+      if (!correo.checkValidity()) {
+        alert('Por favor ingresa un correo válido.');
+        correo.focus();
+        return;
+      }
+      alert('Tu resumen ha sido enviado correctamente a: ' + correo.value);
+    }
+  </script>
+</body>
+</html>
